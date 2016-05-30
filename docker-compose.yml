@@ -1,0 +1,69 @@
+# data-postgres:
+#   image: busybox:1.24.2
+#   volumes:
+#     - ~/volumes/ckan/postgres:/var/lib/postgresql/data
+# postgres:
+#   image: postgres:9.5.3
+#   ports:
+#     - "5432:5432" #retirar
+#   volumes_from:
+#     - data-postgres
+#   environment:
+#     - POSTGRES_PASSWORD=ckan_pass
+#     - POSTGRES_USER=ckan_default
+#     - PGDATA=/var/lib/postgresql/data
+#     - POSTGRES_DB=ckan_default
+#     - POSTGRES_INITDB_ARGS=
+
+data-solr:
+  image: solr:6.0.0
+  volumes:
+    - ~/volumes/ckan/solr:/target/solr
+  command: cp -r server/solr /target/
+  user: root
+solr:
+  image: solr:6.0.0
+  #build: solr
+  ports:
+    - "8983:8983" #retirar
+  volumes:
+    - ~/volumes/ckan/solr:/opt/solr/server/solr
+    - ./solr/precreate-ckan.sh:/docker-entrypoint-initdb.d/precreate-ckan.sh
+  user: root
+  environment:
+    - SOLR_CKAN_CORE=ckan-core
+
+# datapusher:
+#   build: _service-provider/_datapusher
+#   hostname: datapusher
+#   domainname: localdomain
+#   ports:
+#     - "8800:8800"
+
+# ckan:
+#   build: .
+#   ports:
+#     #??- "2222:22"
+#     - "5000:5000"
+#     #- "8080:80"
+#   links:
+#     - postgres:postgres
+#     - solr:solr
+#     #- datapusher:datapusher
+#   #volumes_from:
+#     #- data
+#   environment:
+#     - CKAN_SQLALCHEMY_URL=postgresql://ckan_default:ckan@postgres/ckan_default
+#     #- CKAN_DATASTORE_WRITE_URL=
+#     #- CKAN_DATASTORE_READ_URL=
+#     - CKAN_SOLR_URL=http://solr:8983/solr/gettingstarted
+#     - CKAN_SITE_ID=default
+#     - CKAN_SITE_URL=http://10.32.66.36
+#     #- CKAN_STORAGE_PATH=
+#     #- CKAN_DATAPUSHER_URL=
+#     #- CKAN_SMTP_SERVER=
+#     #- CKAN_SMTP_STARTTLS=
+#     #- CKAN_SMTP_USER=
+#     #- CKAN_SMTP_PASSWORD=
+#     #- CKAN_SMTP_MAIL_FROM=
+
