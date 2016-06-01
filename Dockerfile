@@ -19,9 +19,12 @@ RUN pip install -e 'git+https://github.com/ckan/ckan.git@ckan-2.5.2#egg=ckan' &&
         mkdir -p /etc/ckan/default && \ 
         ln -s $CKAN_HOME/src/ckan/who.ini /etc/ckan/default/who.ini
 
-COPY docker-entrypoint.sh /
+COPY scripts /opt/docker-ckan/scripts
+ENV PATH /opt/docker-ckan/scripts:$PATH
+
+RUN apt-get -qq install wget
 
 EXPOSE 5000
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["ckan"]
