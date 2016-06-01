@@ -31,6 +31,7 @@ COPY config/$CONFIG_OPTIONS $CKAN_CONFIG/$CONFIG_OPTIONS
 
 # Copy scripts
 COPY scripts /opt/docker-ckan/scripts
+RUN chmod -R u+x /opt/docker-ckan/scripts
 ENV PATH /opt/docker-ckan/scripts:$PATH
 
 EXPOSE 5000
