@@ -1,13 +1,16 @@
 postgres:
   image: postgres:9.5.3
   volumes:
+    - ./postgres/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
     - ~/volumes/ckan/postgres:/var/lib/postgresql/data
   environment:
-    - POSTGRES_PASSWORD=ckan_pass
-    - POSTGRES_USER=ckan_default
     - PGDATA=/var/lib/postgresql/data
-    - POSTGRES_DB=ckan_default
-    # - POSTGRES_INITDB_ARGS=
+    - CKAN_USER=ckan_default
+    - CKAN_PASSWORD=ckan_pass
+    - CKAN_DB=ckan_default
+    - DATASTORE_USER=datastore_default
+    - DATASTORE_PASSWORD=datastore_pass
+    - DATASTORE_DB=datastore_default
 
 solr:
   image: solr:6.0.0
@@ -40,8 +43,8 @@ ckan:
     - ~/volumes/ckan/data:/var/lib/ckan/default
   environment:
     - CKAN_SQLALCHEMY_URL=postgresql://ckan_default:ckan_pass@postgres/ckan_default
-    # - CKAN_DATASTORE_WRITE_URL=
-    # - CKAN_DATASTORE_READ_URL=
+    - CKAN_DATASTORE_WRITE_URL=postgresql://ckan_default:ckan_pass@postgres/datastore_default
+    - CKAN_DATASTORE_READ_URL=postgresql://datastore_default:datastore_pass@postgres/datastore_default
     - CKAN_SOLR_URL=http://solr:8983/solr/ckan-core
     - CKAN_SITE_ID=default
     - CKAN_SITE_URL=http://10.32.66.36:5000
