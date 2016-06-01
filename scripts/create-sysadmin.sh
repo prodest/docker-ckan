@@ -11,4 +11,4 @@ fi
 . /usr/lib/ckan/default/bin/activate
 cd /usr/lib/ckan/default/src/ckan
 
-paster sysadmin add $1 -c /etc/ckan/default/production.ini
+paster sysadmin add $1 -c "$CONFIG"

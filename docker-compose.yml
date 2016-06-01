@@ -36,8 +36,8 @@ ckan:
     - solr:solr
     # - datapusher:datapusher
   volumes:
-    - ./config/production.ini:/etc/ckan/default/production.ini
-    - ~/volumes/ckan/ckan:/var/lib/ckan/default
+    - ./config/custom-options.ini:/etc/ckan/default/custom-options.ini
+    - ~/volumes/ckan/data:/var/lib/ckan/default
   environment:
     - CKAN_SQLALCHEMY_URL=postgresql://ckan_default:ckan_pass@postgres/ckan_default
     # - CKAN_DATASTORE_WRITE_URL=
@@ -52,4 +52,3 @@ ckan:
     # - CKAN_SMTP_USER=
     # - CKAN_SMTP_PASSWORD=
     # - CKAN_SMTP_MAIL_FROM=
-
