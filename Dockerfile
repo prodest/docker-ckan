@@ -13,6 +13,7 @@ RUN apt-get -qq update && \
 ENV CKAN_HOME /usr/lib/ckan/default
 ENV CKAN_CONFIG /etc/ckan/default
 ENV CONFIG /etc/ckan/default/ckan.ini
+ENV CONFIG_OPTIONS="custom-options.ini"
 
 # Create directories & virtual env for CKAN
 RUN mkdir -p $CKAN_HOME && \
@@ -24,6 +25,9 @@ RUN pip install -e 'git+https://github.com/ckan/ckan.git@ckan-2.5.2#egg=ckan' &&
         pip install -r $CKAN_HOME/src/ckan/requirements.txt && \
         mkdir -p $CKAN_CONFIG && \ 
         ln -s $CKAN_HOME/src/ckan/who.ini $CKAN_CONFIG/who.ini
+
+# Copy custom configurations
+COPY config/$CONFIG_OPTIONS $CKAN_CONFIG/$CONFIG_OPTIONS
 
 # Copy scripts
 COPY scripts /opt/docker-ckan/scripts

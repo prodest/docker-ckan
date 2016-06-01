@@ -12,7 +12,6 @@ write_config () {
     #     "ckan.datastore.read_url  = ${DATASTORE_READ_URL}" \
     #     "ckan.datapusher.url      = ${DATAPUSHER_URL}"
 
-    CONFIG_OPTIONS="custom-options.ini"
     # apply any custom options
     if [ -e "$CKAN_CONFIG/$CONFIG_OPTIONS" ]; then
         echo "Configuring custom options from $CONFIG_OPTIONS"
