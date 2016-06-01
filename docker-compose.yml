@@ -14,8 +14,6 @@ postgres:
 
 solr:
   image: solr:6.0.0
-  # ports:
-  #   - "8983:8983"
   volumes:
     - ./solr/precreate-core.sh:/docker-entrypoint-initdb.d/precreate-core.sh
     - ~/volumes/ckan/solr:/opt/solr/server/solr/ckan-core
@@ -23,12 +21,8 @@ solr:
   environment:
     - SOLR_CKAN_CORE=ckan-core
 
-# datapusher:
-#   build: _service-provider/_datapusher
-#   hostname: datapusher
-#   domainname: localdomain
-#   ports:
-#     - "8800:8800"
+datapusher:
+  build: datapusher
 
 ckan:
   build: .
@@ -37,7 +31,7 @@ ckan:
   links:
     - postgres:postgres
     - solr:solr
-    # - datapusher:datapusher
+    - datapusher:datapusher
   volumes:
     - ./config/custom-options.ini:/etc/ckan/default/custom-options.ini
     - ~/volumes/ckan/data:/var/lib/ckan/default
@@ -49,7 +43,7 @@ ckan:
     - CKAN_SITE_ID=default
     - CKAN_SITE_URL=http://10.32.66.36:5000
     - CKAN_STORAGE_PATH=/var/lib/ckan/default
-    # - CKAN_DATAPUSHER_URL=
+    - CKAN_DATAPUSHER_URL=http://datapusher:8800/
     # - CKAN_SMTP_SERVER=
     # - CKAN_SMTP_STARTTLS=
     # - CKAN_SMTP_USER=
