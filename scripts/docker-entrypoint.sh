@@ -30,9 +30,8 @@ if [ "$1" = 'ckan' ]; then
     
     if [ ! -e "$CONFIG" ]; then
         paster make-config ckan "$CONFIG"
+        write_config
     fi
-    
-    write_config
     
     cd $CKAN_HOME/src/ckan
     paster db init -c "$CONFIG"
